@@ -14,7 +14,7 @@ import SwiftUI
  */
 struct ContentView: View {
     @State private var selection = 0
-    @ObservedObject var viewRouter: ViewRouter
+    @ObservedObject var viewRouter = ViewRouter()
  
     var body: some View {
         VStack(spacing: 0) {

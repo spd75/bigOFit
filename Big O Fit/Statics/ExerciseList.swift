@@ -9,6 +9,29 @@
 import Foundation
 
 class ExerciseList {
+    public static let sampleRoutineEx = [
+                                        [
+                                            SpecExercise(exercise: ExerciseList.allExercisesArray[0][0], rest: [0, 15]),
+                                            SpecExercise(exercise: ExerciseList.allExercisesArray[0][0], rest: [0, 15]),
+                                            SpecExercise(exercise: ExerciseList.allExercisesArray[0][0], rest: [0, 15])
+                                        ],
+                                        [
+                                            SpecExercise(exercise: ExerciseList.allExercisesArray[0][1], rest: [0, 50])
+                                        ]
+//                                            SpecExercise(exercise: ExerciseList.allExercisesArray[0][1], rest: [0, 50]),
+//                                            SpecExercise(exercise: ExerciseList.allExercisesArray[0][1], rest: [0, 50]),
+//                                        ],
+//                                        [
+//                                            SpecExercise(exercise: ExerciseList.allExercisesArray[1][0], rest: [0, 30]),
+//                                            SpecExercise(exercise: ExerciseList.allExercisesArray[1][0], rest: [0, 15]),
+//                                            SpecExercise(exercise: ExerciseList.allExercisesArray[1][0], rest: [1, 15]),
+//                                            SpecExercise(exercise: ExerciseList.allExercisesArray[1][0], rest: [0, 15]),
+//                                            SpecExercise(exercise: ExerciseList.allExercisesArray[1][0], rest: [1, 15])
+//                                        ]
+                                        
+                                    ]
+    public static let sampleRoutine = Routine(name: "Sample Routine", exercises: ExerciseList.sampleRoutineEx)
+    
     public static let allExerciseGroups = ["Chest", "Arms", "Back", "Core", "Legs", "Other"]
     
     public static var allExercisesArray: [[GenExercise]] = [

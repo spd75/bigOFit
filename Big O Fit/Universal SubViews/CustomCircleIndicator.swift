@@ -14,13 +14,18 @@ struct CustomCircleIndicator: View {
     
     
     var body: some View {
-        HStack {
-            ForEach(0..<totalScreenNum) { i in
-                Image(systemName: self.getImageName(index: i))
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
+        VStack {
+            Spacer()
+            HStack {
+                ForEach(0..<totalScreenNum) { i in
+                    Image(systemName: self.getImageName(index: i))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                }
             }
+            Spacer()
         }
+
     }
     
     private func getImageName(index: Int) -> String {
