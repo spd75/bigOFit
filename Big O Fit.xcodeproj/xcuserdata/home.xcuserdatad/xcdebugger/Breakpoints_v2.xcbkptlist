@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "CF7AE1E6-637D-4B1C-BCB2-ED4C978E256B"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "80F2E271-5E1A-42A1-A6D2-5E672BE43B3D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Big O Fit/Universal SubViews/SearchScreen.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "11"
+            endingLineNumber = "11"
+            landmarkName = "unknown"
+            landmarkType = "0">
+            <Locations>
+               <Location
+                  uuid = "80F2E271-5E1A-42A1-A6D2-5E672BE43B3D - 922f894fd55fd57b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Big_O_Fit.SearchScreen.init(currentText: Swift.String, comparisonWord: Swift.String, currentLevenshtein: Swift.Int, searchOptions: Swift.Array&lt;Swift.String&gt;) -&gt; Big_O_Fit.SearchScreen"
+                  moduleName = "Big O Fit"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/home/Library/Autosave%20Information/Big%20O%20Fit/Big%20O%20Fit/Universal%20SubViews/SearchScreen.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "12"
+                  endingLineNumber = "12"
+                  offsetFromSymbolStart = "88">
+               </Location>
+               <Location
+                  uuid = "80F2E271-5E1A-42A1-A6D2-5E672BE43B3D - 36869eff20386786"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Big_O_Fit.SearchScreen.init() -&gt; Big_O_Fit.SearchScreen"
+                  moduleName = "Big O Fit"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/home/Library/Autosave%20Information/Big%20O%20Fit/Big%20O%20Fit/Universal%20SubViews/SearchScreen.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "13"
+                  endingLineNumber = "13"
+                  offsetFromSymbolStart = "44">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
