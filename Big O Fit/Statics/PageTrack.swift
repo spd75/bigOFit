@@ -11,6 +11,18 @@ import SwiftUI
 import Combine
 
 
+
+
+
+
+enum PriorityPageTrack {
+    case    tabbedView,
+            signIn,
+            activeWorkout
+}
+
+
+
 /** PageTrack provides all options that determine which page the app is currently on.  This is crucial for
     app navigation since this app does not utilize the traditional "navigation view."
  */
@@ -18,15 +30,22 @@ enum PageTrack {
     case    workoutMain,
             workoutAddPage,
             workoutQuickStartPage,
+            workoutQuickStartRoutineSearch,
             workoutSpecificPage,
+            workoutAddNewRoutineSearch,
             groupsMain,
             searchMain,
             createMain,
             createAddExercise,
+            createAddRoutine,
+            createSpecificRoutine,
             createSearchExercise,
             createSearchMuscleGroupMain,
             createSearchMuscleGroupIncluded,
-            profileMain
+            profileMain,
+            profileSettings,
+            profileViewWorkout,
+            profileViewExerciseData
 }
 
 
@@ -37,6 +56,12 @@ enum PageTrack {
  */
 class ViewRouter: ObservableObject {
     let objectWillChange = PassthroughSubject<ViewRouter, Never>()
+    var currentOverallPage: PriorityPageTrack = .tabbedView {
+        didSet {
+            objectWillChange.send(self)
+        }
+    }
+    
     var currentFivePage: [PageTrack] = [.workoutMain, .groupsMain, .searchMain, .createMain, .profileMain] {
         didSet {
             objectWillChange.send(self)

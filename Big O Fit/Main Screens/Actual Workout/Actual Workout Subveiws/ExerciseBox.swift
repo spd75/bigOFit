@@ -27,10 +27,10 @@ struct ExerciseBox: View {
             /// when put together
             Divider().foregroundColor(.white)
                 .padding(.bottom, 1)
-                .background(Color.white)
+                .background(fontColor ?? Color.white)
             
             /// The title row which contains the name of the exercise and no weight or rep data
-            TextRow(leftText: exercises[0].name)
+            TextRow(leftText: exercises[0].name, fontColor: self.fontColor)
                 .padding(.bottom, titleSpacing ?? 0)
             
             ForEach(0..<exercises.count, id: \.self) { i in
@@ -44,7 +44,7 @@ struct ExerciseBox: View {
 
 struct ExerciseBox_Previews: PreviewProvider {
     static var previews: some View {
-        ExerciseBox(exercises: ExerciseList.sampleRoutineEx[0], titleSpacing: 4, setIndent: 30)
+        ExerciseBox(exercises: ExerciseList.sampleWorkout.specExercises[0], titleSpacing: 4, setIndent: 30)
             .background(CustomColors.darkishred)
     }
 }

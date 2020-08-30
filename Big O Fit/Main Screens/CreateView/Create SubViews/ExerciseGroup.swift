@@ -8,8 +8,7 @@
 
 import SwiftUI
  
-/** Takes a series of exercise tabs and organizes them according to the primary muscle groups they
-    train.
+/** Takes a series of exercise tabs and organizes them according to the primary muscle groups they train.
     
     All exercises currently come from Exercise.swift
  */
@@ -33,9 +32,9 @@ struct ExerciseGroup: View {
                             ExerciseTab(exercise: exercise)
                                 .padding(.horizontal, 0)
                         }
-                    }
+                    }.padding(.vertical, 2)
                 }
-                .frame(width: Constants.screenWidth, alignment: .leading)
+                .frame(width: Constants.screenWidth,alignment: .leading)
                 .padding(.bottom, 20)
             }
 
@@ -51,6 +50,6 @@ struct ExerciseGroup: View {
 
 struct ExerciseGroup_Previews: PreviewProvider {
     static var previews: some View {
-        ExerciseGroup(exerciseName: "Chest", exerciseList: ExerciseList.chestExercises)
+        ExerciseGroup(exerciseName: "Chest", exerciseList: ExerciseList.allExercisesArray[0])
     }
 }

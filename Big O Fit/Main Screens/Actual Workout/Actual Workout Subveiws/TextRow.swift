@@ -35,7 +35,7 @@ struct TextRow: View {
             Text(rightText2 ?? "")
                 .font(.custom(fontName ?? "Nunito-Bold", size: fontSize ?? 20))
                 .frame(width: Constants.screenWidth * 0.15)
-        }.foregroundColor(Color.white)
+        }.foregroundColor(fontColor ?? .white)
     }
 }
 

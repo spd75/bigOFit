@@ -39,8 +39,9 @@ class SpecExercise: Hashable, ObservableObject {
     func setResults(weight: Int, reps: Int) {
         self.weight = weight
         self.reps = reps
-        self.weightStr = String(weight)
+        self.weightStr = weight < 0 ? "BW" : String(weight)
         self.repsStr = String(reps)
+        self.genExercise.updatePersonalRecord(weight: weight)
     }
     
 }

@@ -12,26 +12,31 @@ struct WorkoutSpecific: View {
     let workout: Workout
     
     var body: some View {
-        VStack {
-            Text("Your mama so fat")
-            Text(workout.workoutName)
-            Text(workout.groupName)
-            Text(createDateString(month: workout.month, day: workout.day, year: workout.year, weekday: workout.weekday))
+        ScrollView (.vertical, showsIndicators: false) {
+            VStack (spacing: 0) {
+                Text(workout.routine.name)
+                    .font(.custom("Nunito-SemiBold", size: 36))
+                Text(String(CurrentDateTime.getDateTimeText(comp: ExerciseList.getCompletedWorkout(workout: self.workout).dateComp)))
+                    .font(.custom("Nunito-SemiBold", size: 20))
+                Text(workout.groupName)
+                    .font(.custom("Nunito-SemiBold", size: 20))
+                
+                VStack {
+                    ForEach(0..<self.workout.routine.exercises.count, id: \.self) { i in
+                        AddingExerciseTab(exercise: self.workout.routine.exercises[i][0], setsNum: Binding.constant(self.workout.routine.exercises[i].count), timeNum: Binding.constant(self.workout.routine.restArr[i]))
+                    }
+                }.padding(.top, 30)
+            }.padding(12)
         }
 
     }
     
     
-    func createDateString(month: Int, day: Int, year: Int, weekday: Int) -> String {
-        let monthString = Constants.months[month - 1]
-        let weekday = Constants.weekdayAbr[weekday - 1]
-        
-        return "\(weekday): \(monthString) \(String(day)), \(String(year))"
-    }
+
 }
 
 struct WorkoutSpecific_Previews: PreviewProvider {
     static var previews: some View {
-        WorkoutSpecific(workout: TestWorkouts.workoutList[0][0])
+        WorkoutSpecific(workout: ExerciseList.sampleWorkout)
     }
 }

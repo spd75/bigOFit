@@ -18,12 +18,12 @@ struct WorkoutEvent: View {
         VStack (alignment: .center, spacing: 5) {
             HStack {
                 VStack (alignment: .leading) {
-                    CalendarDate(monthNum: workout.month, dayNum: workout.day, dayOfWeekNum: workout.weekday, yearNum: workout.year)
+                    CalendarDate(monthNum: workout.month ?? 0, dayNum: workout.day ?? 0, dayOfWeekNum: workout.weekday ?? 0, yearNum: workout.year ?? 0)
                 }.padding(.horizontal, 5)
                 
                 VStack (alignment: .leading, spacing: 0) {
                     VStack (alignment: .leading) {
-                        Text(workout.workoutName)
+                        Text(workout.routine.name)
                             .font(.custom("Nunito-SemiBold", size: 20))
             
                         Text(workout.groupName)
@@ -38,7 +38,6 @@ struct WorkoutEvent: View {
                     .resizable()
                     .frame(width: 45, height: 45)
                     .cornerRadius(45)
-                    .shadow(radius: 5)
 
             }
             
@@ -52,6 +51,9 @@ struct WorkoutEvent: View {
             self.viewRouter.currentFivePage[0] = PageTrack.workoutSpecificPage
             Workout.workoutSelected = self.workout
         })
+        .clipped()
+        .shadow(radius: 2, y: 1)
+
     }
 }
 

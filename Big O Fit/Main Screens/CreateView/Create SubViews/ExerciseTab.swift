@@ -15,7 +15,13 @@ struct ExerciseTab: View {
     var exercise: GenExercise
     
     var body: some View {
-        VStack {
+        var allBodyParts = ""
+        
+        for text in self.exercise.bodyPartsToString() {
+            allBodyParts += text
+        }
+        
+        return VStack {
             VStack (spacing: 0) {
                 VStack(alignment: .leading) {
                     Text(exercise.name)
@@ -23,14 +29,10 @@ struct ExerciseTab: View {
                         .font(.custom("Nunito-Bold", size: 22))
                         .padding(0)
                     
-                    HStack (spacing: 0) {
-                        ForEach(self.exercise.bodyPartsToString(), id: \.self) { bodypart in
-                            Text(bodypart)
-                                .font(.custom("Nunito-Regular", size: 14))
-                                .lineLimit(1)
-                                .padding(0)
-                        }
-                    }
+                    Text(allBodyParts)
+                        .font(.custom("Nunito-Regular", size: 14))
+                        .lineLimit(1)
+                        .padding(0)
                         
                 }
                 .padding(.bottom, 4)
@@ -49,7 +51,7 @@ struct ExerciseTab: View {
                         .multilineTextAlignment(.leading)
                         .font(.custom("Nunito-Regular", size: fontDSize))
                 }
-                .padding(.top, 6)
+                .padding(.top, 10)
                 .padding(.horizontal, 10)
                 .frame(width: Constants.screenWidth * 0.88, height: fontDSize * 6, alignment: .topLeading)
 
@@ -59,18 +61,23 @@ struct ExerciseTab: View {
             .padding(12)
             .frame(width: Constants.screenWidth * 0.88)
             .background(Color.white)
-            }
-            .frame(width: Constants.screenWidth)
-        
+            .clipped()
+            .shadow(radius: 2, y: 1)
+
         }
+        .frame(width: Constants.screenWidth)
+
+        
+    }
+
         
         
 
-    }
+}
 
 struct ExerciseTab_Previews: PreviewProvider {
     
     static var previews: some View {
-        ExerciseTab(exercise: ExerciseList.chestExercises[0])
+        ExerciseTab(exercise: ExerciseList.allExercisesArray[0][0])
     }
 }

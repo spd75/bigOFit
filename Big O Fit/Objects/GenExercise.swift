@@ -8,7 +8,7 @@
 
 import Foundation
 
-class GenExercise: Hashable {
+class GenExercise: Hashable, ObservableObject {
     static func == (lhs: GenExercise, rhs: GenExercise) -> Bool {
         return lhs.name == rhs.name && lhs.description == rhs.description
     }
@@ -57,9 +57,23 @@ class GenExercise: Hashable {
         "Other": BodyPart.other
     ]
     
+    static let bodyPartCategories: Dictionary<String, [BodyPart]> = [
+        "Arms": [.forearms, .biceps, .triceps, .shoulders, .frontShoulders, .outerShoulders, .rearShoulders],
+        "Chest": [.chest],
+        "Back": [.lats, .traps],
+        "Core": [.upperabs, .lowerabs],
+        "Legs": [.glutes, .quads, .calves, .hamstrings]
+    ]
+    
+    
     var name: String                    /// The name of the exercise
     var description: String             /// The description of the exercise
     var bodyParts: [BodyPart]           /// An array of BodyPart enums that tracks which bodyparts the exercise uses
+    var categoryString: String
+    
+    @Published var workoutsIn: [Workout] = []
+    @Published var workoutsInLocator: [[Int]] = []
+    @Published var personalRecord: Int = 0
     
     
     /// Only constructor for body part
@@ -67,6 +81,13 @@ class GenExercise: Hashable {
         self.name = name
         self.description = description
         self.bodyParts = bodyParts
+        
+        if bodyParts.count <= 0 {
+            self.categoryString = "Other"
+        } else {
+            self.categoryString = GenExercise.assignCategory(mainBodyPart: bodyParts[0])
+        }
+        
     }
     
      
@@ -81,6 +102,34 @@ class GenExercise: Hashable {
         }
         
         return bodyPartsString
+    }
+    
+    static func assignCategory(mainBodyPart: BodyPart) -> String {
+        for key in GenExercise.bodyPartCategories.keys {
+            if GenExercise.bodyPartCategories[key]?.contains(mainBodyPart) ?? false {
+                return key
+            }
+        }
+        
+        return "Unassigned"
+    }
+    
+    
+    func addToWorkoutsIn(workout: Workout) {
+        if workout.exercisesPerformed.contains(self) {
+            workoutsIn.append(workout)
+            var locator: [Int] = []
+            for i in 0..<workout.exercisesPerformed.count {
+                if workout.exercisesPerformed[i] == self {
+                    locator.append(i)
+                }
+            }
+            self.workoutsInLocator.append(locator)
+        }
+    }
+    
+    func updatePersonalRecord(weight: Int) {
+        self.personalRecord = self.personalRecord < weight ? weight : self.personalRecord
     }
     
 }

@@ -52,39 +52,39 @@ extension String {
         return letterSum + exactnessSum
         
     }
-
-}
-
-func organizeWordSimilarity(allWords: [String], compareTo: String) -> [String] {
-    var distanceToWords: Dictionary<Int, [String]> = [:]
-    var organizedDistances: [Int] = []
-    var organizedWords: [String] = []
-
-    for word in allWords {
-        let ld = word.searchDistance(compare: compareTo)
-        if !organizedDistances.contains(ld) {
-            organizedDistances.append(ld)
-        }
-
-        if !(distanceToWords.keys.contains(ld)) {
-            distanceToWords[ld] = [word]
-        } else {
-            distanceToWords[ld]?.append(word)
-        }
-    }
-
-    organizedDistances.sort()
-    organizedDistances.reverse()
     
-    let primaryDist = organizedDistances[0]
+    
+    func updateRemainingOptions(allWords: [String], compareTo: String) -> [String] {
+        var distanceToWords: Dictionary<Int, [String]> = [:]
+        var organizedDistances: [Int] = []
+        var organizedWords: [String] = []
 
-    for dist in organizedDistances {
-        if dist > primaryDist - 10 {
-            organizedWords += distanceToWords[dist]!
+        for word in allWords {
+            let ld = word.searchDistance(compare: compareTo)
+            if !organizedDistances.contains(ld) {
+                organizedDistances.append(ld)
+            }
+
+            if !(distanceToWords.keys.contains(ld)) {
+                distanceToWords[ld] = [word]
+            } else {
+                distanceToWords[ld]?.append(word)
+            }
         }
+
+        organizedDistances.sort()
+        organizedDistances.reverse()
         
+        let primaryDist = organizedDistances[0]
+
+        for dist in organizedDistances {
+            if dist > primaryDist - 10 {
+                organizedWords += distanceToWords[dist]!
+            }
+            
+        }
+
+        return organizedWords
     }
 
-    return organizedWords
 }
-

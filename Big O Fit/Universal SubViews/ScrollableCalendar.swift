@@ -55,7 +55,10 @@ struct ScrollableCalendar: View {
 
                         }))
                 }
-            }.background(Color.white)
+            }
+            .background(Color.white)
+            .clipped()
+            .shadow(radius: 2, y: 1)
         }
         
     }

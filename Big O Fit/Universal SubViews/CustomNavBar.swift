@@ -15,27 +15,36 @@ struct CustomNavBar: View {
     let width = UIScreen.main.bounds.size.width
     
     let requiresAddButton: [PageTrack] = [
-                    .workoutMain
+                    .workoutMain,
                 ]
     let requiresBackButton: [PageTrack] = [
                     .workoutAddPage,
                     .workoutQuickStartPage,
                     .workoutSpecificPage,
+                    .workoutQuickStartRoutineSearch,
+                    .workoutAddNewRoutineSearch,
                     .createAddExercise,
+                    .createAddRoutine,
+                    .createSpecificRoutine,
                     .createSearchExercise,
                     .createSearchMuscleGroupMain,
-                    .createSearchMuscleGroupIncluded
+                    .createSearchMuscleGroupIncluded,
+                    .profileViewWorkout,
+                    .profileViewExerciseData
                 ]
     
     let addScreens: [PageTrack] = [.workoutAddPage, .createMain, .createMain, .createMain, .createMain]
     let backScreens: [[PageTrack? : PageTrack]] = [
-            [nil: .workoutMain],
+            [nil: .workoutMain,
+                .workoutQuickStartRoutineSearch: .workoutQuickStartPage,
+                .workoutAddNewRoutineSearch: .workoutAddPage],
             [nil: .groupsMain],
             [nil: .searchMain],
             [nil: .createMain,
                 .createSearchMuscleGroupMain: .createAddExercise,
                 .createSearchMuscleGroupIncluded: .createAddExercise,
-                .createSearchExercise: .createAddExercise],
+                .createSearchExercise: .createAddRoutine,
+                .createSpecificRoutine: .createMain],
             [nil: .profileMain]
         ]
     
@@ -59,11 +68,14 @@ struct CustomNavBar: View {
 
         }
         .edgesIgnoringSafeArea(.top)
+        .zIndex(2)
         .frame(maxWidth: .infinity)
         .frame(height: height / 15)
         .padding(.top, 22)
         .padding(.bottom, 4)
-        .background(Color(red: 200/255, green: 15/255, blue: 40/255, opacity: 0.75))
+        .background(CustomColors.darkishred)
+        .clipped()
+        .shadow(color: Color(red: 136/255, green: 136/255, blue: 136/255), radius: 2, y: 2)
         
     }
     
@@ -81,6 +93,8 @@ struct CustomNavBar: View {
             title = "Quick Start"
         case .workoutSpecificPage:
             title = "Workout"
+        case .workoutQuickStartRoutineSearch:
+            title = "Search Routines"
         case .groupsMain:
             title = "Groups"
         case .searchMain:
@@ -97,6 +111,18 @@ struct CustomNavBar: View {
             title = "Search Muscle"
         case .createSearchMuscleGroupIncluded:
             title = "Search Muscle"
+        case .createAddRoutine:
+            title = "Add Routine"
+        case .createSpecificRoutine:
+            title = "Routine"
+        case .profileSettings:
+            title = "Profile Settings"
+        case .profileViewWorkout:
+            title = "Routine Summary"
+        case .profileViewExerciseData:
+            title = "Exercise Data"
+        case .workoutAddNewRoutineSearch:
+            title = "Add Workout"
         }
         
         return title

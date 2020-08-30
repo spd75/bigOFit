@@ -16,6 +16,7 @@ import SwiftUI
 */
 
 struct PauseScreen: View {
+    @ObservedObject var viewRouter: ViewRouter
     @State var imageName: String = "pause"  /// The system name for image in the pause button
     @State var buttonPadding: CGFloat = 0   /// The padding for the pause button (play button is off center and requires some padding)
     @Binding var isPaused: Bool             /// Binded variable that is toggled when the pause button is pressed
@@ -25,9 +26,9 @@ struct PauseScreen: View {
     
     var body: some View {
         VStack {
-            
             /// Pause button which controls whether the active workout is resumed or paused
             Button(action: {
+                
                 if self.imageName == "pause" {
                     self.imageName = "play"
                     self.buttonPadding = 5
@@ -56,7 +57,23 @@ struct PauseScreen: View {
                     .frame(width: Constants.screenWidth * 0.22)
                     
             }
-        }.frame(width: Constants.screenWidth, height: Constants.screenHeight * 0.85)
+            
+            if self.isPaused {
+                
+                ActionButton(text: "Quit", widthRatio: 0.34, fontSize: 35, buttonColor: Color.white, buttonPadding: 20, textColor: CustomColors.darkGrayBackground, action: {
+                        self.viewRouter.currentOverallPage = .tabbedView
+                    })
+            } else {
+                ActionButton(text: "Quit", widthRatio: 0.34, fontSize: 35, buttonPadding: 20, action: {})
+                    .hidden()
+            }
+
+            
+        }
+        .frame(width: Constants.screenWidth, height: Constants.screenHeight * 0.85)
+        .padding(.top, Constants.screenHeight * 0.11)
+        .clipped()
+        .shadow(radius: 5, y: 1)
         
 
     }
@@ -65,7 +82,7 @@ struct PauseScreen: View {
 
 struct PauseScreen_Previews: PreviewProvider {
     static var previews: some View {
-        PauseScreen(isPaused: Binding.constant(false), timer: FlexTimer(), backgroundColor: Binding.constant(CustomColors.darkishred))
+        PauseScreen(viewRouter: ViewRouter(), isPaused: Binding.constant(false), timer: FlexTimer(), backgroundColor: Binding.constant(CustomColors.darkishred))
             .background(CustomColors.darkishred)
     }
 }

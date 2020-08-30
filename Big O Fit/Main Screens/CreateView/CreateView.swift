@@ -9,39 +9,83 @@
 import SwiftUI
 
 struct CreateView: View {
+    @EnvironmentObject var user: BigOFitUser
+    
     @ObservedObject var viewRouter: ViewRouter
-    @State var isOnExercise: Bool = true
-    @Binding var allExercises: [[GenExercise]]
+    @Binding var tabTracker: Int
+    @Binding var currentSpecRoutine: Routine
     @Binding var newWorkoutName: String
     @Binding var newWorkoutDesc: String
+    @Binding var newWorkoutMainBodyPart: [String]
+    @Binding var newWorkoutIncludedBodyPart: [String]
+    
+    @Binding var routineName: String
+    @Binding var routineDescription: String
+    @Binding var exerciseStringArray: [String]
+    @Binding var exerciseInfo: [[[Int]]]
     
     var body: some View {
-        let createButtonText = self.isOnExercise ? "Create Exercise" : "Create Routine"
+        let createButtonText = self.tabTracker == 0 ? "Create Routine" : "Create Exercise"
+        
+        let subscreenTitle = self.tabTracker == 0 ? "Routines" : "Exercises"
+        let subscreenInfo = self.tabTracker == 0 ? "Scroll through to see all your routines. Click on any routine to see more info." : "Scroll through to see the exercises you can use in your workouts. If you want to add another exercise just create it!"
 
         
         return VStack {
             ScrollView (.vertical, showsIndicators: false) {
-                DoubleTabSwitcher(leftText: "Exercises", rightText: "Routines", isOnLeft: $isOnExercise)
+                TabSwitcher(textArr: ["Routines", "Exercises"], currentTab: self.$tabTracker)
+                    .border(Color.gray)
                     .padding(.vertical, 20)
-                Button(action: {
-                    self.newWorkoutName = ""
-                    self.newWorkoutDesc = ""
-                    self.viewRouter.currentFivePage[3] = .createAddExercise
-                }) {
-                    Section {
-                        Text(createButtonText)
-                            .font(.custom("Nunito-SemiBold", size: 20))
-                            .foregroundColor(.white)
-                    }
-                    .frame(width: Constants.screenWidth * 0.78)
-                    .padding(.vertical, 15)
-                    .background(CustomColors.darkishred)
+                    .clipped()
+                    .shadow(radius: 2, y: 1)
 
-                }.padding(.bottom, 15)
                 
-                if self.isOnExercise {
-                    ExerciseAllGroups(bodyParts: ExerciseList.allExerciseGroups, exercises: $allExercises)
-                } 
+                VStack {
+                    ActionButton(text: createButtonText, action: {
+                        self.newWorkoutName = ""
+                        self.newWorkoutDesc = ""
+                        self.newWorkoutMainBodyPart = []
+                        self.newWorkoutIncludedBodyPart = []
+                        
+                        self.routineName = ""
+                        self.routineDescription = ""
+                        self.exerciseStringArray = []
+                        self.exerciseInfo = []
+                        
+                        if createButtonText == "Create Exercise" {
+                            self.viewRouter.currentFivePage[3] = .createAddExercise
+                        } else {
+                            self.viewRouter.currentFivePage[3] = .createAddRoutine
+                        }
+                    })
+                    
+                }.padding(.bottom, 35)
+
+                
+                VStack {
+                    VStack (spacing: 4) {
+                        Text(subscreenTitle)
+                            .font(.custom("Nunito-Bold", size: 25))
+                        Text(subscreenInfo)
+                            .font(.custom("Nunito-Regular", size: 15))
+                            .padding(.horizontal, Constants.screenWidth * 0.02)
+                            .multilineTextAlignment(.center)
+                    }
+                    .frame(width: Constants.screenWidth * 0.88)
+                    .padding(.top, 15)
+                    .padding(.bottom, 20)
+                    .background(Color.white)
+                }
+                .padding(.bottom, 20)
+                .clipped()
+                .shadow(radius: 2, y: 1)
+
+                
+                if self.tabTracker == 0 {
+                    RoutineAll(viewRouter: viewRouter, currentSpecRoutine: $currentSpecRoutine)
+                } else {
+                    ExerciseAllGroups(bodyParts: ExerciseList.allExerciseGroups)
+                }
                 
                 Spacer()
             }
@@ -53,6 +97,6 @@ struct CreateView: View {
 
 struct CreateView_Previews: PreviewProvider {
     static var previews: some View {
-        CreateView(viewRouter: ViewRouter(), allExercises: Binding.constant(ExerciseList.allExercisesArray), newWorkoutName: Binding.constant(""), newWorkoutDesc: Binding.constant(""))
+        CreateView(viewRouter: ViewRouter(), tabTracker: Binding.constant(0), currentSpecRoutine: Binding.constant(Routine(name: "", description: "", exercises: [], restArr: [])), newWorkoutName: Binding.constant(""), newWorkoutDesc: Binding.constant(""), newWorkoutMainBodyPart: Binding.constant([]), newWorkoutIncludedBodyPart: Binding.constant([]), routineName: Binding.constant(""), routineDescription: Binding.constant(""), exerciseStringArray: Binding.constant([]), exerciseInfo: Binding.constant([]))
     }
 }

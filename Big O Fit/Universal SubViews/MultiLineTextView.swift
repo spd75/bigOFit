@@ -43,12 +43,6 @@ struct MultilineTextView: UIViewRepresentable {
     
 
     func updateUIView(_ uiView: UITextView, context: Context) {
-//        if text != "" {
-//            uiView.text = text
-//        } else {
-//            uiView.text = fillerText
-//        }
-        
     }
     
     func makeCoordinator() -> MultilineTextView.Coordinator {

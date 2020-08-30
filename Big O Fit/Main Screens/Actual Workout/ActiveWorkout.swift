@@ -21,6 +21,7 @@ import SwiftUI
  */
 
 struct ActiveWorkout: View {
+    @ObservedObject var viewRouter: ViewRouter
     @State var xoffset: CGFloat = 0                         /// Offset of window to control scrolling
     @State var xoffsetTabBar: CGFloat = 0                   /// Offset of tab bar at bottom of screen to make sure it doesn't move relative to screen
     @State var page = 1                                     /// Keeps track of which page is active for the tab bar
@@ -30,11 +31,13 @@ struct ActiveWorkout: View {
     
     @ObservedObject var workoutTimer = FlexTimer()          /// Timer that tracks overall set time and resting time
     
-    var routine: Routine                                    /// The actual routine being executed
+    @ObservedObject var workout: Workout                    /// The actual routine being executed
     let scrollConstant: CGFloat = 44                        /// The amount to move each
     let timer = Timer.publish(                              /// Timer that assists in scrolling by changing the xoffset exery interval
                     every: 0.01, on: .current, in: .common
                 ).autoconnect()
+    
+    @EnvironmentObject var user: BigOFitUser
     
     
     /// The ranges for each screen which the user must swipe past in order to change screens in that direction
@@ -57,9 +60,9 @@ struct ActiveWorkout: View {
             
             /// The container for all 3 sub-screens which make up the view
             HStack (spacing: 0) {
-                PauseScreen(isPaused: $isPaused, timer: workoutTimer, backgroundColor: $backgroundColor)
-                PresentWorkout(routine: routine, timer: workoutTimer, isPaused: $isPaused, textColor: $backgroundColor)
-                PresentWorkoutStats(routine: routine)
+                PauseScreen(viewRouter: self.viewRouter, isPaused: $isPaused, timer: workoutTimer, backgroundColor: $backgroundColor)
+                PresentWorkout(workout: workout, timer: workoutTimer, isPaused: $isPaused, textColor: $backgroundColor)
+                PresentWorkoutStats(workout: workout)
             }
             
             /// The tab bar at the bottom of the screen that indicates which of the 3 screens is active
@@ -146,7 +149,7 @@ struct ActiveWorkout: View {
 
 struct ScollScreen_Previews: PreviewProvider {
     static var previews: some View {
-        ActiveWorkout(routine: ExerciseList.sampleRoutine)
+        ActiveWorkout(viewRouter: ViewRouter(), workout: ExerciseList.sampleWorkout)
         
 
     }

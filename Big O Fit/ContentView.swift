@@ -12,9 +12,10 @@ import SwiftUI
 /** ContentView provides the main view for the entire app.  It provides the traditional
     5-tabbed layout in which each MotherView is generated according to which tab is pressed.
  */
-struct ContentView: View {
+struct TabbedView: View {
     @State private var selection = 0
     @ObservedObject var viewRouter = ViewRouter()
+    @EnvironmentObject var user: BigOFitUser
  
     var body: some View {
         VStack(spacing: 0) {
@@ -57,7 +58,7 @@ struct ContentView: View {
                     }
                     .tag(3)
                 
-                Text("Fourth View")
+                ProfileMotherView(viewRouter: self.viewRouter)
                     .font(.title)
                     .tabItem {
                         Image(systemName: "house")
@@ -78,6 +79,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(viewRouter: ViewRouter())
+        TabbedView(viewRouter: ViewRouter())
     }
 }

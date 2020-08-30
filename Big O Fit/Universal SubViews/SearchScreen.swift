@@ -11,23 +11,20 @@ import SwiftUI
 
 struct SearchScreen: View {
     @ObservedObject var viewRouter: ViewRouter
+    @ObservedObject var search: Search
     var searchTitle: String
-    let pageIndex: Int? = 3
+    var pageIndex: Int?
     let returnPage: PageTrack
-    @State var searchOptions: [String]
     @Binding var selectedOptions: [String]
-    @State var currentText: String = ""
-    @State var currentLevenshtein = 0
 
     
     
     var body: some View {
-        let searchOptionsLeft = organizeWordSimilarity(allWords: searchOptions, compareTo: self.currentText)
         
         return VStack {
             
             // The field for the search bar
-            TextField(searchTitle, text: $currentText)
+            TextField(searchTitle, text: self.$search.inputText)
                 .padding(.top, 15)
                 .padding(.horizontal, 15)
                 .font(.custom("Nunito-Regular", size: 20))
@@ -40,10 +37,10 @@ struct SearchScreen: View {
             
             // The container for the search results
             ScrollView(.vertical, showsIndicators: false) {
-                ForEach(searchOptionsLeft, id: \.self) { option in
+                ForEach(self.search.remainingOptions, id: \.self) { option in
                     Button(action: {
                         self.selectedOptions.append(option)
-                        self.viewRouter.currentFivePage[self.pageIndex!] = self.returnPage
+                        self.viewRouter.currentFivePage[self.pageIndex ?? 3] = self.returnPage
                     }) {
                         
                         VStack (spacing: 0) {
@@ -74,6 +71,6 @@ struct SearchScreen: View {
 
 struct SearchScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SearchScreen(viewRouter: ViewRouter(), searchTitle: "Search muscle groups", returnPage: PageTrack.createAddExercise , searchOptions: Array(GenExercise.bodyPartsToName.values.sorted()), selectedOptions: Binding.constant([""]))
+        SearchScreen(viewRouter: ViewRouter(), search: Search(inputText: "", searchOptions: ["first", "second", "third"]), searchTitle: "Search muscle groups", returnPage: PageTrack.createAddExercise, selectedOptions: Binding.constant([]))
     }
 }

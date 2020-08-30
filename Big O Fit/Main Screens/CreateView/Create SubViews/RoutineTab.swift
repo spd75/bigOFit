@@ -1,56 +1,59 @@
 //
-//  ExerciseTab.swift
+//  Routine Tab.swift
 //  Big O Fit
 //
-//  Created by Home on 7/15/20.
+//  Created by Sergio Diaz on 8/22/20.
 //  Copyright © 2020 Home. All rights reserved.
 //
 
 import SwiftUI
 
 struct RoutineTab: View {
-    static let horizPadding: CGFloat = 10.0
-    let fontDSize: CGFloat = 17.0
+    @ObservedObject var viewRouter: ViewRouter
+    @Binding var currentSpecRoutine: Routine
+    var routine: Routine
+    
+    var routineSize: CGFloat?
+    var imageRad: CGFloat?
+    var descriptionSize: CGFloat?
     
     var body: some View {
-        VStack {
-            VStack (spacing: 0) {
+        var exerciseNames: [String] = []
+        for i in 0..<self.routine.exercises.count {
+            if i == self.routine.exercises.count - 1 {
+                exerciseNames.append(self.routine.exercises[i][0].name)
+            } else {
+                exerciseNames.append(self.routine.exercises[i][0].name + ", ")
+            }
+            
+        }
+        
+        return VStack (spacing: 8) {
+                VStack (spacing: 0) {
+                
                 HStack {
                     VStack(alignment: .leading) {
-                        Text("Push")
+                        Text(routine.name)
                             .multilineTextAlignment(.leading)
-                            .font(.custom("Nunito-Bold", size: 22))
+                            .font(.custom("Nunito-Bold", size: routineSize ?? 24))
                             .padding(0)
-                        
-                        HStack (spacing: 0) {
-                            Text("Chest,")
-                                .font(.custom("Nunito-Regular", size: 14))
-                                .lineLimit(1)
-                                .padding(0)
-                            Text("Triceps")
-                                .font(.custom("Nunito-Regular", size: 14))
-                                .lineLimit(1)
-                                .padding(0)
-                        }
-                            
                     }
-                    .padding(.bottom, 4)
-                    .padding(.horizontal, ExerciseTab.horizPadding)
+            
                     
                     Spacer()
                     
                     Image("beaver")
                         .resizable()
-                        .frame(width: 45, height: 45)
+                        .frame(width: self.imageRad ?? 40, height: self.imageRad ?? 40)
                         .cornerRadius(45)
-                        .shadow(radius: 5)
-
-                }
-                .padding(.vertical, 4)
-                .padding(.trailing, 10)
+                        .shadow(radius: 8)
+                    
+                    }
+                .padding(.horizontal, 10)
                 .frame(width: Constants.screenWidth * 0.88)
+                }
 
-                
+
 
                 Divider()
                     .frame(width: Constants.screenWidth * 0.84, alignment: .center)
@@ -58,34 +61,41 @@ struct RoutineTab: View {
                     .background(CustomColors.darkishred)
                 
                 VStack (alignment: .leading) {
-                    Text("This is some sample text")
+                    Text(routine.description)
                     .lineSpacing(0)
                         .multilineTextAlignment(.leading)
-                        .font(.custom("Nunito-Regular", size: fontDSize))
+                        .font(.custom("Nunito-Regular", size: self.descriptionSize ?? 20))
                 }
                 .padding(.top, 6)
                 .padding(.horizontal, 10)
-                .frame(width: Constants.screenWidth * 0.88, height: fontDSize * 6, alignment: .topLeading)
+                .frame(width: Constants.screenWidth * 0.88, alignment: .topLeading)
+                
 
-                
-                
             }
-            .padding(12)
+            .padding(15)
             .frame(width: Constants.screenWidth * 0.88)
             .background(Color.white)
+            .onTapGesture {
+                self.currentSpecRoutine = self.routine
+                self.viewRouter.currentFivePage[3] = .createSpecificRoutine
             }
-        .frame(width: Constants.screenWidth)
-        
+            .clipped()
+            .shadow(radius: 2, y: 1)
+            
+            
+            
         }
-        
-        
 
-    }
+           
+        
+            
+            
+}
+    
+
 
 struct RoutineTab_Previews: PreviewProvider {
-    
     static var previews: some View {
-        RoutineTab()
+        RoutineTab(viewRouter: ViewRouter(), currentSpecRoutine: Binding.constant(Routine(name: "", description: "", exercises: [], restArr: [])), routine: ExerciseList.sampleRoutine)
     }
 }
-

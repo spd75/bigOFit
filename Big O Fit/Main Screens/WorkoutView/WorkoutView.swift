@@ -15,12 +15,15 @@ import SwiftUI
 */
 struct WorkoutView: View {
     @ObservedObject var viewRouter: ViewRouter  /// Observed object that works with WorkoutsMotherView to determine certain display aspects
-    let work = TestWorkouts.workoutList
+    @Binding var selectedAddNewRoutineString: [String]
+    @Binding var selectedQuickStartRoutineString: [String]
+    var scheduledWorkouts: [[Workout]]
     
     var body: some View {
-        ScrollView(.vertical) {
+        return ScrollView(.vertical) {
             VStack(spacing: 0) {
                 ScrollableCalendar()
+                
                 Spacer()
                 Spacer()
                 
@@ -41,27 +44,31 @@ struct WorkoutView: View {
                     .padding(.vertical, 15)
                     .background(CustomColors.darkishred)
                 }
-                
+                .clipped()
+                .shadow(color: Color(red: 135/255, green: 135/255, blue: 135/255), radius: 3, y: 2)
             }
                 Spacer()
                 Spacer()
                 
                 VStack {
-                    ForEach(TestWorkouts.workoutList, id: \.self) { workoutG in
-                        WorkoutGroup(workouts: workoutG, isThisWeek: false, viewRouter: self.viewRouter)
+                    ForEach(self.scheduledWorkouts, id: \.self) { workoutG in
+                        WorkoutGroup(workouts: workoutG, viewRouter: self.viewRouter)
                     }
 
                 }.padding(.bottom, 20)
                 
-            }
-            
+        }.onAppear {
+            self.selectedAddNewRoutineString = []
+            self.selectedQuickStartRoutineString = []
         }
+            
+    }
         
     }
 
 
 struct ExerciseView_Previews: PreviewProvider {
     static var previews: some View {
-        WorkoutView(viewRouter: ViewRouter())
+        WorkoutView(viewRouter: ViewRouter(), selectedAddNewRoutineString: Binding.constant([]), selectedQuickStartRoutineString: Binding.constant([]), scheduledWorkouts: [])
     }
 }
