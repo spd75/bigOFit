@@ -9,13 +9,19 @@
 import Foundation
 
 
+/// String extension implemented to add search characteristics to strings
 extension String {
     subscript(index: Int) -> Character {
         return self[self.index(self.startIndex, offsetBy: index)]
     }
-}
-
-extension String {
+    
+    
+    
+    /** Returns the Levenshtein Distance between the specific string and a comparison string.  The Levenshtein Distance is an integer value which represents the number of changes needed to convert one string to another.
+            - Parameter compare; the string to compare this string to
+            - Returns: the Levenshtein Distance of the two strings
+     */
+    
     public func searchDistance(compare: String) -> Int {
         var letterSum = 0
         var exactnessSum = 0
@@ -53,38 +59,5 @@ extension String {
         
     }
     
-    
-    func updateRemainingOptions(allWords: [String], compareTo: String) -> [String] {
-        var distanceToWords: Dictionary<Int, [String]> = [:]
-        var organizedDistances: [Int] = []
-        var organizedWords: [String] = []
-
-        for word in allWords {
-            let ld = word.searchDistance(compare: compareTo)
-            if !organizedDistances.contains(ld) {
-                organizedDistances.append(ld)
-            }
-
-            if !(distanceToWords.keys.contains(ld)) {
-                distanceToWords[ld] = [word]
-            } else {
-                distanceToWords[ld]?.append(word)
-            }
-        }
-
-        organizedDistances.sort()
-        organizedDistances.reverse()
-        
-        let primaryDist = organizedDistances[0]
-
-        for dist in organizedDistances {
-            if dist > primaryDist - 10 {
-                organizedWords += distanceToWords[dist]!
-            }
-            
-        }
-
-        return organizedWords
-    }
 
 }

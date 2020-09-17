@@ -8,6 +8,16 @@
 
 import SwiftUI
 
+/** ContentMotherView controls which ScreenView is currently opened. The two possible ScreenViews that could be opened from this MotherView are:
+        - Tabbed View: the main view of the app where the user can schedule workouts, create routines and exercises, view personal records, etc.
+        - Active Workout Screen: the view used when a workout is currently taking place.
+ 
+    Fields:
+        - @ObservedObject viewRouter: object controls which screen is currently shown through the use of mother views
+        - @EnvironmentObject activeHolder: the class which contains the current routine and workout selected to perform.
+        - @Environment user: the object which contains all the information for the current user using the application
+ */
+
 struct ContentMotherView: View {
     @ObservedObject var viewRouter = ViewRouter()
     @EnvironmentObject var activeHolder: ActiveHolder
@@ -16,6 +26,8 @@ struct ContentMotherView: View {
     
     var body: some View {
         return VStack {
+            
+            // If currentOverallPage is changed in viewRouter, the screen displayed also changes
             if viewRouter.currentOverallPage == .tabbedView {
                 TabbedView(viewRouter: self.viewRouter)
             } else if viewRouter.currentOverallPage == .activeWorkout {

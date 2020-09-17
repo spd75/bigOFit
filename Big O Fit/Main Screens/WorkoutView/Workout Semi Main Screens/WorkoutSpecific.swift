@@ -16,10 +16,10 @@ struct WorkoutSpecific: View {
             VStack (spacing: 0) {
                 Text(workout.routine.name)
                     .font(.custom("Nunito-SemiBold", size: 36))
-                Text(String(CurrentDateTime.getDateTimeText(comp: ExerciseList.getCompletedWorkout(workout: self.workout).dateComp)))
-                    .font(.custom("Nunito-SemiBold", size: 20))
+                Text(String(DateTime.getDateTimeText(comp: ExerciseList.getCompletedWorkout(workout: self.workout).dateComp)))
+                    .font(.custom("Nunito-Regular", size: 20))
                 Text(workout.groupName)
-                    .font(.custom("Nunito-SemiBold", size: 20))
+                    .font(.custom("Nunito-Regular", size: 20))
                 
                 VStack {
                     ForEach(0..<self.workout.routine.exercises.count, id: \.self) { i in
@@ -30,8 +30,6 @@ struct WorkoutSpecific: View {
         }
 
     }
-    
-    
 
 }
 

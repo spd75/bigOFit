@@ -14,23 +14,23 @@ struct WorkoutGroup: View {
     
     var body: some View {
         return VStack (alignment: .center, spacing: 10) {
-            NunitoTitle(text: self.isThisWeek())
-            ForEach(workouts, id: \.self) { workout in
-                WorkoutEvent(workout: workout, viewRouter: self.viewRouter)
+            if workouts.count > 0 {
+                NunitoTitle(text: "\(Constants.months[workouts[0].month! - 1]) \(workouts[0].year!)")
+                ForEach(0..<workouts.count, id: \.self) { i in
+                    WorkoutEvent(workout: self.workouts[i], viewRouter: self.viewRouter)
+                }
             }
         }
     }
     
     
     func isThisWeek() -> String {
-        let current = CurrentDateTime.getUpdatedTime()
-        let year = self.workouts[0].year == current.year
-        let month = self.workouts[0].month == current.month
+        if self.workouts.count == 0 {
+            return ""
+        }
         
-        if year && month {
-            if self.workouts[0].weekday! < current.weekday! && self.workouts[0].day! < current.day! {
-                return "This Week"
-            }
+        if self.workouts[0].isThisWeek() {
+            return "This Week"
         }
         
         return "\(Constants.months[workouts[0].month! - 1]) \(workouts[0].year!)"

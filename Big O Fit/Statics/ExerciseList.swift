@@ -28,6 +28,7 @@ class ExerciseList {
     public static func getTestUser() -> BigOFitUser {
         let user = BigOFitUser(name: "Sergio Diaz", bio: "This is my bio", profilePicName: "beaver")
         user.completedWorkouts = [ExerciseList.getCompletedWorkout(workout: ExerciseList.sampleWorkout), ExerciseList.getCompletedWorkout(workout: ExerciseList.sampleWorkout1), ExerciseList.getCompletedWorkout(workout: ExerciseList.sampleWorkout2)]
+        
         return user
     }
     

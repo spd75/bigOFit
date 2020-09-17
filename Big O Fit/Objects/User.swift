@@ -8,8 +8,26 @@
 
 import Foundation
 
+/** BigOFitUser is the class which keeps track of a user's data. In the completed version, the user's infomration will be stored in Firebase.
+        
+    Fields:
+        - name: the name of the user
+        - bio: the biography of the user which is usually displayed on the profile screen
+        - profilePicName: the filename for the picture used
+        - allExercises: all the exercises which a user
+        - allRoutines: all the default routines plus the created routines a user has made
+        
+        - @Published friends: an array of other BigOFit friends the user has
+        - @Published scheduledWorkouts: an array of all the workouts that the user has scheduled
+        - @Published completedWorkouts: an array of all the workouts that the user has completed
+        - @Published completedExercises: dicitonary of all the exercises that have been completed
+        - @Published personalRecords: a dictionary of all the personal records that have been set
+ */
+
 
 class BigOFitUser: ObservableObject {
+    
+    // Check lines 13-24 to view field documentation.
     var name: String
     var bio: String
     var profilePicName: String
@@ -21,8 +39,13 @@ class BigOFitUser: ObservableObject {
     @Published var completedWorkouts: [Workout]
     @Published var completedExercises: Dictionary<String, [GenExercise]>
     @Published var personalRecords: Dictionary<String, Dictionary<String, Int>>
-    @Published var exerciseLog: Dictionary<GenExercise, Workout>
 
+
+    /** Only constructor for BigOFit user. Created everytime a user creates an account.
+        - Parameter name: the name of the user -- set to empty string by default
+        - Parameter bio: the bio of the user -- set to empty string by default
+        - Parameter profilePicName: asigned to profilePicName */
+    
     init(name: String = "", bio: String = "", profilePicName: String) {
         self.name = name
         self.bio = bio
@@ -35,44 +58,71 @@ class BigOFitUser: ObservableObject {
         self.scheduledWorkouts = []
         self.completedWorkouts = []
         self.personalRecords = [:]
-        self.exerciseLog = [:]
         self.completedExercises = [:]
     }
     
     
-//    func addToScheduledWorkouts(workout: Workout) {
-//        let current = CurrentDateTime.getUpdatedTime()
-//        let monthDiff = workout.month! - current.year!
-//        let yearDiff = workout.year! - current.year!
-//        
-//        if monthDiff == 0 && yearDiff == 0 {
-//            self.addToScheduledWorkoutsArr(workout: workout)
-//        } else {
-//            let adjustedYearDiff = yearDiff == 0 ? 0 : (yearDiff - 1)
-//            self.addToScheduledWorkoutsArr(workout: workout)
-//        }
-//    }
     
-//    func addToScheduledWorkoutsArr(workout: Workout, key: Int) {
-//        if self.scheduledWorkouts.keys.contains(key) {
-//            var workoutArr = self.scheduledWorkouts[key]!
-//            for i in 0..<self.scheduledWorkouts[key]!.count {
-//                if workout.day! < self.scheduledWorkouts[key]![i].day! {
-//                    self.scheduledWorkouts[key]!.insert(workout, at: i)
-//                } else if workout.day! == self.scheduledWorkouts[key]![i].day! {
-//                    if workout.hour! < self.scheduledWorkouts[key]![i].hour! {
-//                        self.scheduledWorkouts[key]!.insert(workout, at: i)
-//                    } else if workout.hour! == self.scheduledWorkouts[key]![i].hour! {
-//                        if workout.minute! <= self.scheduledWorkouts[key]![i].minute! {
-//                            self.scheduledWorkouts[key]!.insert(workout, at: i)
-//                        }
-//                    }
-//                }
-//             }
-//        } else {
-//            self.scheduledWorkouts[key] = [workout]
-//        }
-//    }
+    
+    func addToScheduledWorkoutsArr(workout: Workout) {
+        let current = DateTime.getUpdatedTime()
+        let currentVal = DateTime.getDateTimeVal(comp: current)
+        let workoutToVal = workout.getDateTimeVal()
+        
+        if workoutToVal < currentVal  {
+            print("called because \(workoutToVal) is less than \(currentVal)")
+            return
+        }
+        
+        let originalSize = scheduledWorkouts.count
+        var max = originalSize == 1 ? 1 : scheduledWorkouts.count - 1
+        var min = 0
+        var i = (max - min) / 2
+        
+        while max - min > 0 {
+            let workoutInVal = self.scheduledWorkouts[i].getDateTimeVal()
+            
+            if workoutToVal <= workoutInVal {
+                max = i
+            } else {
+                min = i
+            }
+            
+            i = ((max - min) / 2) + min
+            
+            if max - min <= 1 {
+                let maxD = originalSize == 1 ? 0 : max
+                
+                let minW = scheduledWorkouts[min]
+                let minVal = DateTime.getDateTimeVal(comp: minW.dateComp)
+                
+                let maxW = scheduledWorkouts[maxD]
+                let maxVal = DateTime.getDateTimeVal(comp: maxW.dateComp)
+                
+                if workoutToVal <= minVal {
+                    max = min
+                    i = min
+                } else if originalSize == 1 {
+                    min = 1
+                    i = 1
+                } else {
+                    min = max
+                    i = max
+                }
+                
+                if i == originalSize - 1 && workoutToVal > maxVal {
+                    i = originalSize + 1
+                }
+            }
+        }
+
+        if i < scheduledWorkouts.count {
+            scheduledWorkouts.insert(workout, at: i)
+        } else {
+            scheduledWorkouts.append(workout)
+        }
+        
+    }
     
     
     func removeFromScheduledWorkouts(workout: Workout) {
@@ -170,85 +220,36 @@ class BigOFitUser: ObservableObject {
         }
         return Routine(name: "", description: "", exercises: [], restArr: [])
     }
-    
-    
-    func addWorkout(at i: Int, workoutInArr: Workout, workoutToInsert: Workout) -> Bool {
 
-        
-        return false
-    }
+    
 
 
-    func addToScheduledWorkoutsArr(workout: Workout) {
-        for i in 0..<self.scheduledWorkouts.count {
-            let workoutInArrDate = self.scheduledWorkouts[i].getOverallDate(year: self.scheduledWorkouts[i].year!, month: self.scheduledWorkouts[i].month!, day: self.scheduledWorkouts[i].day!)
-            let workoutInArrTime = self.scheduledWorkouts[i].getOverallTime(hour: self.scheduledWorkouts[i].hour!, minute: self.scheduledWorkouts[i].minute!)
-            let workoutToInsertDate = workout.getOverallDate(year: workout.year!, month: workout.month!, day: workout.day!)
-            let workoutToInsertTime = workout.getOverallTime(hour: workout.hour!, minute: workout.minute!)
-            
-            
-            if workoutToInsertDate < workoutInArrDate {
-                self.scheduledWorkouts.insert(workout, at: i)
-            } else if workoutToInsertDate == workoutInArrDate {
-                if workoutToInsertTime < workoutInArrTime {
-                    self.scheduledWorkouts.insert(workout, at: i)
-                }
-            }
-        }
-        
-        scheduledWorkouts.append(workout)
-    }
-    
-    
+
     func getScheduledWorkouts2D() -> [[Workout]] {
-        var array2D: [[Workout]] = []
-        if self.scheduledWorkouts.count <= 0 {
-            return array2D
+        if scheduledWorkouts.count == 0 {
+            return []
         }
         
-        let cd = CurrentDateTime.getUpdatedTime()
-        let currentDate = CurrentDateTime.getOverallDateWithyear(year: cd.year!, month: cd.month!, day: cd.day!)
-        var currentArray: [Workout] = []
-        var i = 0
-        var start: Workout
-        var scheduledDate: Int
+        var final2D: [[Workout]] = []
+        var currentArr: [Workout] = [self.scheduledWorkouts[0]]
         
-        
-        
-        
-        repeat {
-            start = self.scheduledWorkouts[i]
-            scheduledDate = start.getOverallDateWithyear(year: start.year!, month: start.month!, day: start.day!)
-            currentArray.append(self.scheduledWorkouts[i])
+        for i in 1..<scheduledWorkouts.count {
+            let months = scheduledWorkouts[i].month == scheduledWorkouts[i - 1].month
+            let years = scheduledWorkouts[i].year == scheduledWorkouts[i - 1].year
             
-            i += 1
-        } while (scheduledDate - currentDate < 7 && cd.weekday! < start.weekday! && i < self.scheduledWorkouts.count)
-        
-//        while scheduledDate - currentDate < 7 && cd.weekday! < start.weekday! && i < self.scheduledWorkouts.count {
-//
-//            i += 1
-//            start = self.scheduledWorkouts[i]
-//            scheduledDate = start.getOverallDateWithyear(year: start.year!, month: start.month!, day: start.day!)
-//        }
-        
-        array2D.append(currentArray)
-        if i < self.scheduledWorkouts.count - 1 {
-            i += 1
-            currentArray = [self.scheduledWorkouts[i]]
-        }
-        
-        while i < self.scheduledWorkouts.count {
-            let current = self.scheduledWorkouts[i]
-            let past = self.scheduledWorkouts[i - 1]
-            if current.year == past.year && current.month == past.month {
-                currentArray.append(current)
+            if months && years {
+                currentArr.append(self.scheduledWorkouts[i])
             } else {
-                array2D.append(currentArray)
-                currentArray = [current]
+                final2D.append(currentArr)
+                currentArr = [self.scheduledWorkouts[i]]
             }
         }
         
-        return array2D
+        if currentArr.count > 0 {
+            final2D.append(currentArr)
+        }
+        
+        return final2D
     }
 
     

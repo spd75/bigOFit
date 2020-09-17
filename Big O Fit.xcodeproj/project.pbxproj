@@ -12,7 +12,7 @@
 		95039ABD24EE3365009BC9EC /* ExerciseBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95039ABC24EE3365009BC9EC /* ExerciseBox.swift */; };
 		9509EF9424F6C4290009C8BA /* Search.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9509EF9324F6C4290009C8BA /* Search.swift */; };
 		9509EF9624F6D1F60009C8BA /* ExerciseTabData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9509EF9524F6D1F60009C8BA /* ExerciseTabData.swift */; };
-		9528880524F880A0001BA77B /* CurrentDateTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9528880424F880A0001BA77B /* CurrentDateTime.swift */; };
+		9528880524F880A0001BA77B /* DateTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9528880424F880A0001BA77B /* DateTime.swift */; };
 		952A2AAC24F797F0000C7A87 /* GeometryGetter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952A2AAB24F797F0000C7A87 /* GeometryGetter.swift */; };
 		9531DE2224F47F9500A0A843 /* CompleteWorktout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9531DE2124F47F9500A0A843 /* CompleteWorktout.swift */; };
 		953FDBEF24F7B56D00C176DD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953FDBEE24F7B56D00C176DD /* User.swift */; };
@@ -138,7 +138,7 @@
 		95039ABC24EE3365009BC9EC /* ExerciseBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseBox.swift; sourceTree = "<group>"; };
 		9509EF9324F6C4290009C8BA /* Search.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Search.swift; sourceTree = "<group>"; };
 		9509EF9524F6D1F60009C8BA /* ExerciseTabData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTabData.swift; sourceTree = "<group>"; };
-		9528880424F880A0001BA77B /* CurrentDateTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentDateTime.swift; sourceTree = "<group>"; };
+		9528880424F880A0001BA77B /* DateTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateTime.swift; sourceTree = "<group>"; };
 		952A2AAB24F797F0000C7A87 /* GeometryGetter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometryGetter.swift; sourceTree = "<group>"; };
 		9531DE2124F47F9500A0A843 /* CompleteWorktout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteWorktout.swift; sourceTree = "<group>"; };
 		953FDBEE24F7B56D00C176DD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -396,8 +396,8 @@
 		F45F6B4E24D9BEF4002BCF5E /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				F45F6B4A24D9BB11002BCF5E /* SpecExercise.swift */,
 				F46E12A724D9D4E70017FB74 /* GenExercise.swift */,
+				F45F6B4A24D9BB11002BCF5E /* SpecExercise.swift */,
 				F4F9E46924BDABD200604178 /* Workout.swift */,
 				F45F6B4C24D9BCA0002BCF5E /* Routine.swift */,
 				953FDBF024F7CDAE00C176DD /* ActiveHolder.swift */,
@@ -405,7 +405,6 @@
 				F4DE973424DC216300B16EB1 /* FlexTimer.swift */,
 				F41D7E0C24D070E00034602E /* StringExtra.swift */,
 				953FDBEE24F7B56D00C176DD /* User.swift */,
-				9528880424F880A0001BA77B /* CurrentDateTime.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -509,6 +508,7 @@
 				F412510024CF55BB00D8A7F4 /* BodyPart.swift */,
 				F4BD585524BFD0370097330E /* ExerciseList.swift */,
 				9578D4BB24FB212600394738 /* UserInitialProperties.swift */,
+				9528880424F880A0001BA77B /* DateTime.swift */,
 				F4F9E46D24BDAFAB00604178 /* TestWorkouts.swift */,
 				F46E12A324D9D4780017FB74 /* PageTrack.swift */,
 			);
@@ -694,7 +694,7 @@
 				95475A3D24F1020F000EE70F /* RoutineTab.swift in Sources */,
 				952A2AAC24F797F0000C7A87 /* GeometryGetter.swift in Sources */,
 				F410CA9824CDD1C7000EF20A /* MultiLineTextView.swift in Sources */,
-				9528880524F880A0001BA77B /* CurrentDateTime.swift in Sources */,
+				9528880524F880A0001BA77B /* DateTime.swift in Sources */,
 				9552776124F5ED4E00C8B503 /* ProfileMotherView.swift in Sources */,
 				F4F9E46A24BDABD200604178 /* Workout.swift in Sources */,
 				9598972324ECC9BD00B88F36 /* ExerciseRow.swift in Sources */,

@@ -24,13 +24,15 @@ struct WorkoutsMotherView: View {
     @State var selectedAddNewRoutineString: [String] = []
     @State var selectedQuickStartRoutineString: [String] = []
     @State var selectedRoutineQuickStart: Routine? = nil
+    @State var scheduledWorkouts: [[Workout]]
+    @State var chosenDateComps = DateComponents()
     
     var body: some View {
         return VStack {
             if self.viewRouter.currentFivePage[0] == PageTrack.workoutMain {
-                WorkoutView(viewRouter: self.viewRouter, selectedAddNewRoutineString: self.$selectedAddNewRoutineString, selectedQuickStartRoutineString: self.$selectedQuickStartRoutineString, scheduledWorkouts: self.user.getScheduledWorkouts2D())
+                WorkoutView(viewRouter: self.viewRouter, selectedAddNewRoutineString: self.$selectedAddNewRoutineString, selectedQuickStartRoutineString: self.$selectedQuickStartRoutineString, scheduledWorkouts: self.$scheduledWorkouts)
             } else if self.viewRouter.currentFivePage[0] == PageTrack.workoutAddPage {
-                WorkoutAddNew(viewRouter: self.viewRouter, selectedRoutineString: self.$selectedAddNewRoutineString)
+                WorkoutAddNew(viewRouter: self.viewRouter, scheduledWorkouts: self.$scheduledWorkouts, selectedRoutineString: self.$selectedAddNewRoutineString, chosenDateComps: self.$chosenDateComps)
                     .transition(.move(edge: .trailing))
             } else if self.viewRouter.currentFivePage[0] == PageTrack.workoutQuickStartPage {
                 WorkoutsQuickStart(viewRouter: self.viewRouter, selectedRoutineString: self.$selectedQuickStartRoutineString)
@@ -48,6 +50,7 @@ struct WorkoutsMotherView: View {
 
 struct WorkoutsMotherView_Previews: PreviewProvider {
     static var previews: some View {
-        WorkoutsMotherView(viewRouter: ViewRouter())
+        WorkoutsMotherView(viewRouter: ViewRouter(), scheduledWorkouts: [[ExerciseList.sampleWorkout]])
+            .environmentObject(ExerciseList.getTestUser())
     }
 }

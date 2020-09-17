@@ -8,6 +8,13 @@
 
 import Foundation
 
+/** Simple class used to hold data for the current routines and workouts selected to perform a specExercie in the app.
+ 
+    Fields:
+        - routine: the Routine currently selected
+        - workout: the Workout currently selected
+ */
+
 
 class ActiveHolder: ObservableObject {
     var routine: Routine? = nil

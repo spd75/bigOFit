@@ -24,7 +24,7 @@ struct CompleteWorkout: View {
                         self.activeHolder.routine = nil
                         self.viewRouter.currentOverallPage = .tabbedView
                         
-                        let currentDate = CurrentDateTime.getUpdatedTime()
+                        let currentDate = DateTime.getUpdatedTime()
                         self.workout.dateComp = DateComponents(year: currentDate.year, month: currentDate.month, day: currentDate.day, hour: currentDate.hour, minute: currentDate.minute, weekday: currentDate.weekday)
                         self.user.addToCompletedWorkout(workout: self.workout)
                         self.user.addToPersonalRecords(workout: self.workout)

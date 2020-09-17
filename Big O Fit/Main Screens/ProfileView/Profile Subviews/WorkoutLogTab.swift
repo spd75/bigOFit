@@ -6,8 +6,6 @@ struct WorkoutLogTab: View {
     @Binding var currentWorkout: Workout
     @EnvironmentObject var user: BigOFitUser
     
-    var currentDateTime: CurrentDateTime = CurrentDateTime()
-    
     var body: some View {
         
         return VStack (alignment: .center, spacing: 5) {

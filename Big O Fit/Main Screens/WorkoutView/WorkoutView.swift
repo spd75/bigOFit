@@ -14,10 +14,11 @@ import SwiftUI
     all scheduled workouts for the future.
 */
 struct WorkoutView: View {
+    @EnvironmentObject var user: BigOFitUser
     @ObservedObject var viewRouter: ViewRouter  /// Observed object that works with WorkoutsMotherView to determine certain display aspects
     @Binding var selectedAddNewRoutineString: [String]
     @Binding var selectedQuickStartRoutineString: [String]
-    var scheduledWorkouts: [[Workout]]
+    @Binding var scheduledWorkouts: [[Workout]]
     
     var body: some View {
         return ScrollView(.vertical) {
@@ -51,8 +52,8 @@ struct WorkoutView: View {
                 Spacer()
                 
                 VStack {
-                    ForEach(self.scheduledWorkouts, id: \.self) { workoutG in
-                        WorkoutGroup(workouts: workoutG, viewRouter: self.viewRouter)
+                    ForEach(0..<self.scheduledWorkouts.count, id: \.self) { i in
+                        WorkoutGroup(workouts: self.scheduledWorkouts[i], viewRouter: self.viewRouter)
                     }
 
                 }.padding(.bottom, 20)
@@ -69,6 +70,7 @@ struct WorkoutView: View {
 
 struct ExerciseView_Previews: PreviewProvider {
     static var previews: some View {
-        WorkoutView(viewRouter: ViewRouter(), selectedAddNewRoutineString: Binding.constant([]), selectedQuickStartRoutineString: Binding.constant([]), scheduledWorkouts: [])
+        WorkoutView(viewRouter: ViewRouter(), selectedAddNewRoutineString: Binding.constant([]), selectedQuickStartRoutineString: Binding.constant([]), scheduledWorkouts: Binding.constant([]))
+            .environmentObject(ExerciseList.getTestUser())
     }
 }

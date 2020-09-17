@@ -13,19 +13,21 @@ struct WorkoutAddNew: View {
     @EnvironmentObject var activeHolder: ActiveHolder
     @EnvironmentObject var user: BigOFitUser
     @ObservedObject var viewRouter: ViewRouter
+    @Binding var scheduledWorkouts: [[Workout]]
     @Binding var selectedRoutineString: [String]
     
-    let calendar = Calendar.current
     @State var chosenDate = Date() {
         didSet {
             self.chosenDateComps = self.calendar.dateComponents([.year, .month, .day, .weekday, .minute, .hour], from: self.chosenDate)
         }
     }
-    @State var chosenDateComps = DateComponents()
+    @Binding var chosenDateComps: DateComponents
     @State var selectingDate: Bool = false
+    @State var invalidClicks = 0
+    
+    let calendar = Calendar.current
     
     var body: some View {
-        var dateText = CurrentDateTime.getDateTimeText(comp: self.chosenDateComps)
         var hasRoutines = false
         var validRoutine: Routine = Routine(name: "", description: "", exercises: [], restArr: [])
         if selectedRoutineString.count > 0 {
@@ -34,8 +36,6 @@ struct WorkoutAddNew: View {
             validRoutine = user.getRoutineFromName(name: self.selectedRoutineString[i])
         }
         let validWorkout = Workout(routine: validRoutine, dateComp: self.chosenDateComps)
-        
-        dateText = dateText == "" ? "Click to select a date and time." : dateText
         
         return VStack (spacing: 25) {
                     VStack {
@@ -89,8 +89,10 @@ struct WorkoutAddNew: View {
                             .border(Color(red: 210/255, green: 210/255, blue: 210/255))
                             .frame(width: Constants.screenWidth * 0.88, height: 50)
                             .overlay(
-                                Text(dateText)
-                                    .font(.custom("Nunito-Regular", size: 16))
+                                Text(self.dateText())
+                                    .font(.custom("Nunito-Regular", size: 15))
+                                    .multilineTextAlignment(.center)
+                                    .padding(2)
                             )
                             .onTapGesture {
                                 self.selectingDate.toggle()
@@ -99,7 +101,6 @@ struct WorkoutAddNew: View {
                             .clipped()
                             .shadow(radius: 2, y: 1)
                         
-                        
                         Spacer()
 
                         if self.selectingDate {
@@ -107,37 +108,47 @@ struct WorkoutAddNew: View {
                                 .frame(width: Constants.screenWidth * 0.9, alignment: .center)
                                 .animation(.spring())
                         } else {
-                            ActionButton(text: "Start Workout", action: {
-                                if validRoutine.name != "" && CurrentDateTime.dateCompIsValid(comp: self.chosenDateComps) {
+                            ActionButton(text: "Create Workout", action: {
+                                if validRoutine.name != "" && DateTime.dateCompIsValid(comp: self.chosenDateComps) {
                                     self.selectedRoutineString = []
-                                    self.viewRouter.currentFivePage[0] = .workoutMain
                                     self.user.addToScheduledWorkoutsArr(workout: validWorkout)
+                                    self.scheduledWorkouts = self.user.getScheduledWorkouts2D()
+                                    self.viewRouter.currentFivePage[0] = .workoutMain
+                                    self.chosenDateComps = DateComponents()
+                                } else {
+                                    self.invalidClicks += 1
                                 }
 
-                            }).padding(.bottom, 10)
+                            }).padding(.bottom, 15)
+                            
                         }
-                        
                         
                     }
 
-
-
-                    
-                
             }
-    
-            
-
 
     }
     
+    func dateText() -> String {
+        let current = DateTime.getUpdatedTime()
+        let currentVal = DateTime.getDateTimeVal(comp: current)
+        let chosenVal = DateTime.getDateTimeVal(comp: self.chosenDateComps)
         
+        if chosenVal <= 1 {
+            return "Click here to select a date."
+        }
+        if chosenVal < currentVal {
+            return "Invalid date selected. Please choose a future date."
+        }
+        
+        return DateTime.getDateTimeText(comp: self.chosenDateComps)
+    }
         
 }
 
 
 struct AddNewWorkout_Previews: PreviewProvider {
     static var previews: some View {
-        WorkoutAddNew(viewRouter: ViewRouter(), selectedRoutineString: Binding.constant([]))
+        WorkoutAddNew(viewRouter: ViewRouter(), scheduledWorkouts: Binding.constant([]), selectedRoutineString: Binding.constant([]), chosenDateComps: Binding.constant(DateComponents()))
     }
 }
