@@ -1,1 +1,1 @@
-# bigOFit
+# bigOFit (Workout Application for Friends)
