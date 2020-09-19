@@ -1,6 +1,6 @@
 # bigOFit (Workout Application for Friends)
 
-***Please excuse the lack of documentation. I have tried to document more for those viewing it on Github.  However, because I wrote this program by myself, I didn't have a big need for documentating all functions and classes.***
+***Please excuse the lack of documentation. I have tried to document more for those viewing it on Github.  However, because I wrote this program by myself, I didn't have a big need for documenting all functions and classes.***
 
 ***This is an app that is currently in development.  When last tested, there were multiple bugs (scrolling on rightmost screen in active workout, some PRs were inconsistently recorded, etc.).  I am currently working to fix these bugs.  However, it is safe to download it into XCode to get an idea of what the app looks like.***
 
